@@ -53,9 +53,9 @@ export function useAdminStatus(): AdminStatus {
           // Utiliser les données de la session
           if (isMounted) {
             setAdminStatus({
-              isAdmin: session.user.isAdmin || false,
+              isAdmin: (session.user as any).isAdmin || false,
               loading: false,
-              userApproved: session.user.isApproved || false
+              userApproved: (session.user as any).isApproved || false
             });
           }
         }
@@ -63,9 +63,9 @@ export function useAdminStatus(): AdminStatus {
         console.error('Erreur vérification statut admin:', error);
         if (isMounted) {
           setAdminStatus({
-            isAdmin: session.user.isAdmin || false,
+            isAdmin: (session.user as any).isAdmin || false,
             loading: false,
-            userApproved: session.user.isApproved || false
+            userApproved: (session.user as any).isApproved || false
           });
         }
       }

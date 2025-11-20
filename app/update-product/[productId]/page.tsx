@@ -184,7 +184,7 @@ function UpdateProductPage({ params }: UpdateProductPageProps) {
           name: productData.name,
           description: productData.description,
           categoryId: productData.categoryId,
-          price: productData.price,
+          price: productData.price ?? undefined,
           quantity: productData.quantity || 0,
           unit: productData.unit || '',
           imageUrl: productData.imageUrl || ''

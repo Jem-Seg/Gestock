@@ -46,8 +46,8 @@ const CategoryChart = ({ clerkId, structureId }: { clerkId: string; structureId?
   }, [clerkId, structureId]);
 
   // Calculer le total des produits
-  const totalProducts = data.reduce((acc, item) => acc + item.pv, 0);
-  const maxValue = Math.max(...data.map(item => item.pv), 0);
+  const totalProducts = data.reduce((acc, item) => acc + (item.pv ?? 0), 0);
+  const maxValue = Math.max(...data.map(item => item.pv ?? 0), 0);
 
   // Custom tooltip avec design rétro
   const CustomTooltip = ({ active, payload }: any) => {

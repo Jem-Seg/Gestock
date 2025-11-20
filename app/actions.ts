@@ -60,7 +60,7 @@ export async function checkAndAddUser(userId: string, email?: string) {
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
-          { userId },
+          { id: userId },
           ...(email ? [{ email }] : [])
         ]
       }
@@ -68,11 +68,12 @@ export async function checkAndAddUser(userId: string, email?: string) {
     if (!existingUser) {
       await prisma.user.create({
         data: {
-          userId,
+          id: userId,
           email,
           name: '',
           firstName: '',
           isApproved: false,
+          password: "",
           isAdmin: false
         }
       });
