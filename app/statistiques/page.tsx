@@ -36,14 +36,11 @@ export default function StatistiquesPage() {
   useEffect(() => {
     const loadUserStructures = async () => {
       if (status !== 'authenticated' || !session?.user?.id) {
-        console.log('🔒 Pas authentifié ou pas d\'ID utilisateur');
         return;
       }
 
       try {
-        console.log('📡 Chargement des structures pour user:', session.user.id);
         const response = await fetch(`/api/user/${session.user.id}`);
-        console.log('📡 Réponse API /api/user status:', response.status);
         
         if (!response.ok) {
           if (response.status === 403) {
@@ -56,16 +53,13 @@ export default function StatistiquesPage() {
         }
 
         const data = await response.json();
-        console.log('✅ Données user reçues:', data);
         const structures = data.structures || [];
-        console.log('📋 Structures trouvées:', structures.length);
         
         setUserStructures(structures);
         
         // Sélectionner automatiquement la première structure si une seule disponible
         if (structures.length === 1 && structures[0].structures?.length === 1) {
           const autoSelectedId = structures[0].structures[0].id;
-          console.log('🎯 Auto-sélection de la structure:', autoSelectedId);
           setSelectedStructure(autoSelectedId);
         }
       } catch (error) {

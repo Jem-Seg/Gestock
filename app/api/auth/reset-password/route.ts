@@ -70,8 +70,6 @@ export async function POST(request: NextRequest) {
       where: { id: resetToken.id }
     })
 
-    console.log('✅ Mot de passe réinitialisé pour:', user.email)
-
     return NextResponse.json({
       success: true,
       message: 'Mot de passe réinitialisé avec succès'

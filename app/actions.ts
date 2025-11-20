@@ -519,11 +519,6 @@ export async function getUserPermissionsInfo(userId: string) {
       };
     }
 
-    // Log pour déboggage
-    console.log('Rôle utilisateur:', user.role?.name);
-    console.log('Structure ID:', user.structureId);
-    console.log('Ministère ID:', user.ministereId);
-
     const roleName = user.role?.name?.trim();
 
     switch (roleName) {
@@ -1616,11 +1611,6 @@ export async function getProductCategoryDistribution(userId: string, structureId
       uv: category.uv,
     }));
 
-    if (!structureId || structureId.trim() === '') {
-      console.log('🔄 Top catégories pour "Toutes les structures":',
-        topCategories.map(cat => `${cat.name}: ${cat.count} produits`));
-    }
-
     return chartData;
 
   } catch (error) {
@@ -1690,11 +1680,6 @@ export async function getStockSummary(userId: string, structureId?: string): Pro
         category: true
       }
     })
-
-    if (!structureId || structureId.trim() === '') {
-      console.log('📦 Agrégation StockSummary pour "Toutes les structures":',
-        `${allProducts.length} produits trouvés dans toutes les structures accessibles`);
-    }
     
     // Seuils de stock :
     // - Stock faible : <= 5% de la quantité initiale

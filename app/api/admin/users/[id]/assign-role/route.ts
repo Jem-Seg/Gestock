@@ -17,8 +17,6 @@ export async function POST(
     const body = await request.json();
     const { roleId, ministereId, structureId } = body;
     
-    console.log('Assign role request:', { userId, roleId, ministereId, structureId });
-    
     // Vérifier que l'utilisateur existe
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -95,8 +93,6 @@ export async function POST(
         structure: true,
       },
     });
-    
-    console.log('User updated:', updatedUser);
     
     return NextResponse.json({
       success: true,

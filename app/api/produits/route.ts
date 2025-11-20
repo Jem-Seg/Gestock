@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/server-auth';
 import prisma from '@/lib/prisma';
 
 // GET - Récupérer les produits accessibles par l'utilisateur
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const dbUser = await getCurrentUser();
     if (!dbUser) {
@@ -14,9 +14,20 @@ export async function GET() {
       return NextResponse.json({ error: 'Utilisateur non approuvé' }, { status: 403 });
     }
 
+    // Récupérer les paramètres de l'URL
+    const { searchParams } = new URL(request.url);
+    const structureIdParam = searchParams.get('structureId');
+    const ministereIdParam = searchParams.get('ministereId');
+
     let whereClause: { structureId?: string; ministereId?: string } = {};
 
-    // Filtrer les produits selon le rôle
+    // Si un structureId est fourni en paramètre, l'utiliser
+    if (structureIdParam) {
+      whereClause.structureId = structureIdParam;
+    } else if (ministereIdParam) {
+      whereClause.ministereId = ministereIdParam;
+    } else {
+    // Sinon, filtrer les produits selon le rôle
     if (dbUser.role?.name === 'Agent de saisie' || dbUser.role?.name === 'Directeur') {
       // Uniquement les produits de leur structure
       if (!dbUser.structureId) {
@@ -52,6 +63,7 @@ export async function GET() {
         { status: 403 }
       );
     }
+    }
 
     const produits = await prisma.produit.findMany({
       where: whereClause,
@@ -74,6 +86,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      produits: produits,
       data: produits
     });
   } catch (error) {

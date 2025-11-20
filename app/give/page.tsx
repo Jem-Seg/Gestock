@@ -34,8 +34,6 @@ const GivePage = () => {
         const permissions = await getUserPermissionsInfo((user as any).id);
         const structures = await getUserMinistereStructures((user as any).id);
 
-        console.log('🔍 Permissions:', permissions.scope, '- Structures trouvées:', structures.length);
-
         setUserPermissions(permissions);
 
         // Trouver les données utilisateur avec structureId
@@ -44,7 +42,6 @@ const GivePage = () => {
           if (firstMinistere.structures && firstMinistere.structures.length > 0) {
             const userStructure = firstMinistere.structures[0];
             setUserData({ structureId: userStructure.id });
-            console.log('✅ Structure utilisateur:', userStructure.name, '(ID:', userStructure.id, ')');
           }
         }
       } catch (error) {
@@ -65,9 +62,7 @@ const GivePage = () => {
 
           if (products && products.length > 0) {
             setProducts(products);
-            console.log('✅ Produits chargés:', products.length, 'produits disponibles');
           } else {
-            console.log('⚠️ Aucun produit trouvé dans cette structure');
             setProducts([]);
           }
         }
@@ -92,10 +87,6 @@ const GivePage = () => {
     .slice(0, 10);
 
   // Debug: Afficher info sur les produits disponibles
-  if (products.length === 0 && !loading) {
-    console.log('⚠️ Aucun produit disponible pour cette structure');
-  }
-
   const handleAddToCart = (products: Produit) => {
     setOrder((prevOrder) => {
       const existingProduct = prevOrder.find(item => item.productId === products.id);

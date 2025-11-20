@@ -50,9 +50,6 @@ export async function POST(request: NextRequest) {
     // Pour le développement, on retourne le lien
     const resetLink = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/reset-password?token=${token}`
 
-    console.log('🔗 Lien de réinitialisation:', resetLink)
-    console.log('📧 Email:', email)
-
     return NextResponse.json({
       success: true,
       message: 'Un lien de réinitialisation a été généré.',

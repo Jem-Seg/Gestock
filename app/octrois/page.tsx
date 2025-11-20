@@ -290,17 +290,12 @@ const OctroisPage = () => {
         const userData = result.user || result; // Handle wrapped response
         const userMinistereId = userData.ministereId;
 
-        console.log('🔍 Chargement structures - ministereId:', userMinistereId);
-
         if (userMinistereId) {
           const ministeresResponse = await fetch(`/api/ministeres/${userMinistereId}`);
           const ministeresData = await ministeresResponse.json();
 
-          console.log('📋 Structures reçues:', ministeresData);
-
           if (ministeresData.success && ministeresData.data) {
             const allStructures = ministeresData.data.structures || [];
-            console.log('✅ Structures chargées:', allStructures.length);
             setStructures(allStructures);
           }
         }
@@ -330,16 +325,12 @@ const OctroisPage = () => {
     try {
       // Pour Responsable Achats, charger les produits selon la structure sélectionnée
       if ((userRole === 'Responsable Achats' || userRole === 'Responsable achats') && formData.structureId) {
-        console.log('🔍 Chargement produits - structureId:', formData.structureId);
         const produitsData = await readProduct(formData.structureId);
-        console.log('📦 Produits reçus:', produitsData?.length || 0);
         setProduits(produitsData || []);
       }
       // Pour Agent de saisie, charger les produits de sa structure
       else if (userRole === 'Agent de saisie' && userStructureId) {
-        console.log('🔍 Chargement produits Agent - structureId:', userStructureId);
         const produitsData = await readProduct(userStructureId);
-        console.log('📦 Produits Agent reçus:', produitsData?.length || 0);
         setProduits(produitsData || []);
       }
     } catch (error) {
@@ -357,7 +348,6 @@ const OctroisPage = () => {
   // Charger les structures quand le rôle est disponible
   useEffect(() => {
     if (userRole) {
-      console.log('🎯 Tentative chargement structures - rôle:', userRole);
       loadStructures();
     }
   }, [userRole, loadStructures]);
@@ -369,7 +359,6 @@ const OctroisPage = () => {
       userRole === 'Agent de saisie' && userStructureId;
 
     if (shouldLoadProduits) {
-      console.log('🎯 Tentative chargement produits - rôle:', userRole, 'structure:', formData.structureId || userStructureId);
       loadProduits();
     }
   }, [userRole, formData.structureId, userStructureId, loadProduits]);

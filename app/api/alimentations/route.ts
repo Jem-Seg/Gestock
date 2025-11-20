@@ -18,7 +18,7 @@ async function getUserInfo() {
 }
 
 // GET - Récupérer les alimentations
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const userInfo = await getUserInfo();
     if ('error' in userInfo) {
@@ -26,11 +26,14 @@ export async function GET() {
     }
 
     const { user } = userInfo;
+    const { searchParams } = new URL(request.url);
+    const structureId = searchParams.get('structureId');
+    
     const userRole = user.isAdmin ? 'Admin' : (user.role?.name || '');
     const result = await getAlimentations(
       user.id,
       userRole,
-      user.structureId || undefined,
+      structureId || user.structureId || undefined,
       user.ministereId || undefined
     );
 

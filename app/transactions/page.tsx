@@ -35,8 +35,6 @@ const Page = () => {
       try {
         const structures = await getUserMinistereStructures((user as any).id);
 
-        console.log('🔍 Structures trouvées:', structures.length);
-
         setUserPermissions(null);
         // Trouver les données utilisateur avec structureId
         if (structures && structures.length > 0) {
@@ -44,7 +42,6 @@ const Page = () => {
           if (firstMinistere.structures && firstMinistere.structures.length > 0) {
             const userStructure = firstMinistere.structures[0];
             setUserData({ structureId: userStructure.id });
-            console.log('✅ Structure utilisateur:', userStructure.name, '(ID:', userStructure.id, ')');
           }
         }
       } catch (error) {
@@ -67,15 +64,11 @@ const Page = () => {
         // Si selectedStructureId est '' (toutes les structures) ou undefined, passer undefined à getTransactions
         const targetStructureId = selectedStructureId === '' ? undefined : (selectedStructureId || userData?.structureId);
 
-        console.log('🔍 Chargement des données pour la structure:', targetStructureId || 'TOUTES');
-
         // Charger les transactions (getTransactions gère le cas undefined pour "toutes les structures")
         const txs = await getTransactions((user as any).id, targetStructureId);
 
         if (txs) {
           setTransactions(txs);
-          console.log('📋 Transactions chargées:', txs.length);
-          console.log('🔍 Première transaction:', txs[0]);
         }
 
         // Charger les produits seulement si une structure spécifique est sélectionnée
@@ -83,10 +76,7 @@ const Page = () => {
           const products = await readProduct(targetStructureId);
           if (products && products.length > 0) {
             setProducts(products);
-            console.log('✅ Produits chargés:', products.length, 'produits disponibles');
-            console.log('📦 Premiers produits:', products.slice(0, 3).map(p => ({ id: p.id, name: p.name })));
           } else {
-            console.log('⚠️ Aucun produit trouvé dans cette structure');
             setProducts([]);
           }
         } else {
@@ -122,7 +112,6 @@ const Page = () => {
 
         if (txs) {
           setTransactions(txs);
-          console.log('🔄 Transactions rechargées après mise à jour du stock:', txs.length);
         }
 
         // Recharger aussi les produits pour mettre à jour les quantités
