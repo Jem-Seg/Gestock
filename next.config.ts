@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Configuration pour déploiement production optimisé
+  output: 'standalone',
+  
+  // Strict mode activé pour détection bugs React
+  reactStrictMode: true,
+  
+  // Configuration images sécurisée
   images: {
     remotePatterns: [
       {
@@ -10,13 +17,63 @@ const nextConfig: NextConfig = {
         pathname: '/uploads/**',
       },
       {
-        protocol: 'https',
-        hostname: '**',
+        protocol: 'http',
+        hostname: '192.168.*.*',
+        pathname: '/uploads/**',
       },
+      // Ajouter domaines spécifiques si nécessaire
     ],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
   },
-  // Désactiver strict mode pour éviter double render en développement
-  reactStrictMode: false,
+  
+  // Optimisations production
+  compress: true,
+  poweredByHeader: false, // Sécurité : masquer header "X-Powered-By"
+  
+  // Headers de sécurité
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, must-revalidate',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

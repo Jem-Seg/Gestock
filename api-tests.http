@@ -1,0 +1,51 @@
+# GeStock - Health Check Endpoint
+GET http://localhost:3000
+Accept: application/json
+
+###
+
+# Auth - Register
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Test123456",
+  "name": "Doe",
+  "firstName": "John"
+}
+
+###
+
+# Auth - Login
+POST http://localhost:3000/api/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Test123456"
+}
+
+###
+
+# Get Current User (requires auth)
+GET http://localhost:3000/api/user/{{userId}}
+Authorization: Bearer {{token}}
+
+###
+
+# List Ministeres
+GET http://localhost:3000/api/ministeres
+Authorization: Bearer {{token}}
+
+###
+
+# List Products
+GET http://localhost:3000/api/produits
+Authorization: Bearer {{token}}
+
+###
+
+# Admin - Stats
+GET http://localhost:3000/api/admin/stats
+Authorization: Bearer {{token}}
