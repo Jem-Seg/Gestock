@@ -114,9 +114,11 @@ export default function ForgotPasswordPage() {
                 </p>
                 <div className="flex gap-2">
                   <input
+                    id="reset-link-input"
                     type="text"
                     value={resetLink}
                     readOnly
+                    aria-label="Lien de réinitialisation"
                     className="input input-bordered input-sm flex-1 text-xs"
                   />
                   <button
