@@ -80,8 +80,8 @@ export function useUserInfo(): UserInfo {
             setUserInfo({
               user: null,
               loading: false,
-              isApproved: session.user.isApproved || false,
-              isAdmin: session.user.isAdmin || false
+              isApproved: (session.user as any).isApproved || false,
+              isAdmin: (session.user as any).isAdmin || false
             });
           }
         }
@@ -91,8 +91,8 @@ export function useUserInfo(): UserInfo {
           setUserInfo({
             user: null,
             loading: false,
-            isApproved: session.user.isApproved || false,
-            isAdmin: session.user.isAdmin || false
+            isApproved: (session.user as any).isApproved || false,
+            isAdmin: (session.user as any).isAdmin || false
           });
         }
       }

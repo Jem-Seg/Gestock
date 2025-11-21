@@ -4,26 +4,47 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+interface DiagnosticData {
+  isMobile: boolean;
+  viewport: { width: number; height: number };
+  userAgent: string;
+  sessionStatus: string;
+  hasSession: boolean;
+  timestamp: string;
+}
+
 export default function MobileTestPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [diagnostics, setDiagnostics] = useState<any>({});
+  const [diagnostics, setDiagnostics] = useState<DiagnosticData>({
+    isMobile: false,
+    viewport: { width: 0, height: 0 },
+    userAgent: '',
+    sessionStatus: 'loading',
+    hasSession: false,
+    timestamp: '',
+  });
 
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const viewport = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
+    // Éviter setState synchrone en utilisant un timeout
+    const timer = setTimeout(() => {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const viewport = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+      
+      setDiagnostics({
+        isMobile,
+        viewport,
+        userAgent: navigator.userAgent,
+        sessionStatus: status,
+        hasSession: !!session,
+        timestamp: new Date().toISOString(),
+      });
+    }, 0);
     
-    setDiagnostics({
-      isMobile,
-      viewport,
-      userAgent: navigator.userAgent,
-      sessionStatus: status,
-      hasSession: !!session,
-      timestamp: new Date().toISOString(),
-    });
+    return () => clearTimeout(timer);
   }, [session, status]);
 
   return (
@@ -43,19 +64,22 @@ export default function MobileTestPage() {
             </div>
 
             {/* Info utilisateur */}
-            {session?.user && (
-              <div className="alert alert-success mb-4">
-                <div>
-                  <h3 className="font-bold">Utilisateur connecté</h3>
-                  <p>Email: {session.user.email}</p>
-                  <p>Nom: {session.user.name}</p>
-                  <p>ID: {(session.user as any).id}</p>
-                  <p>Admin: {(session.user as any).isAdmin ? '✅' : '❌'}</p>
-                  <p>Approuvé: {(session.user as any).isApproved ? '✅' : '❌'}</p>
-                  <p>Role ID: {(session.user as any).roleId || 'Non assigné'}</p>
+            {session?.user && (() => {
+              const user = session.user as { email?: string; name?: string; id?: string; isAdmin?: boolean; isApproved?: boolean; roleId?: string };
+              return (
+                <div className="alert alert-success mb-4">
+                  <div>
+                    <h3 className="font-bold">Utilisateur connecté</h3>
+                    <p>Email: {user.email}</p>
+                    <p>Nom: {user.name}</p>
+                    <p>ID: {user.id}</p>
+                    <p>Admin: {user.isAdmin ? '✅' : '❌'}</p>
+                    <p>Approuvé: {user.isApproved ? '✅' : '❌'}</p>
+                    <p>Role ID: {user.roleId || 'Non assigné'}</p>
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Diagnostics techniques */}
             <div className="bg-base-200 p-4 rounded-lg mb-4">
@@ -84,7 +108,7 @@ export default function MobileTestPage() {
                 className="btn btn-primary"
                 onClick={() => router.push('/')}
               >
-                Retour à l'accueil
+                Retour à l&apos;accueil
               </button>
               {!session && (
                 <button 
