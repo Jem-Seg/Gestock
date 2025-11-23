@@ -13,6 +13,9 @@ import {
   Settings 
 } from 'lucide-react';
 
+// Force dynamic rendering (évite prerendering)
+export const dynamic = 'force-dynamic';
+
 interface DashboardStats {
   totalUsers: number;
   pendingUsers: number;
