@@ -44,6 +44,13 @@ export default function Home() {
     }
   }, [status, user]);
 
+  // Redirection vers sign-in si non authentifié
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/sign-in');
+    }
+  }, [status, router]);
+
   const loadUserData = async () => {
     try {
       if (!(user as any)?.id) {
@@ -90,27 +97,12 @@ export default function Home() {
     );
   }
 
-  if (!user) {
-    // Rediriger vers la page de connexion si non authentifié
-    if (status === 'unauthenticated') {
-      router.push('/sign-in');
-      return (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="loading loading-spinner loading-lg"></div>
-        </div>
-      );
-    }
+  if (!user || status === 'unauthenticated') {
+    // La redirection est gérée par useEffect
     return (
       <Wrapper>
-        <div className="hero min-h-[400px]">
-          <div className="hero-content text-center">
-            <div className="max-w-md">
-              <h1 className="text-4xl font-bold">GeStock</h1>
-              <p className="py-6">
-                Système de gestion des stocks pour les ministères et structures gouvernementales.
-              </p>
-            </div>
-          </div>
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="loading loading-spinner loading-lg"></div>
         </div>
       </Wrapper>
     );
