@@ -1,28 +1,14 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@plugin "daisyui" {
-  themes: light --default, dark --prefersdark, retro;
-}
-
-@keyframes wiggle {
-
-  0%,
-  100% {
-    transform: rotate(0deg);
+@layer utilities {
+  .animate-wiggle {
+    animation: wiggle 1.5s ease-in-out infinite;
   }
-
-  50% {
-    transform: rotate(2deg);
-  }
-
-}
-
-.animate-wiggle {
-  animation: wiggle 1.5s ease-in-out infinite;
 }
 
 /* React toastify overrides */
-
 :root {
   --toastify-color-light: #ECE3CA;
   --toastify-text-color-light: #793205;
