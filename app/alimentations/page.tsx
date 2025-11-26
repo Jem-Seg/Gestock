@@ -445,9 +445,15 @@ const AlimentationsPage = () => {
       return;
     }
 
-    // Demander confirmation
+    // Validation : Observation obligatoire pour les rejets
+    if (action === 'reject' && (!observations || observations.trim() === '')) {
+      toast.error('Une observation est obligatoire pour rejeter une alimentation');
+      return;
+    }
+
+    // Demander confirmation avec affichage de l'observation si fournie
     const confirmMessage = `Êtes-vous sûr de vouloir ${action === 'validate' ? 'valider' : action === 'reject' ? 'rejeter' : 'mettre en instance'
-      } ${selectedIds.size} alimentation(s) ?`;
+      } ${selectedIds.size} alimentation(s) ?${observations ? '\n\nObservation : ' + observations : ''}`;
 
     if (!confirm(confirmMessage)) {
       return;
@@ -596,7 +602,7 @@ const AlimentationsPage = () => {
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <textarea
-                    placeholder="Observations (optionnel)"
+                    placeholder="Observations (obligatoire pour le rejet)"
                     className="textarea textarea-bordered textarea-sm w-64"
                     value={observations}
                     onChange={(e) => setObservations(e.target.value)}
@@ -702,7 +708,7 @@ const AlimentationsPage = () => {
                             {alimentation.documents.map((doc) => (
                               <a
                                 key={doc.id}
-                                href={doc.url}
+                                href={`/api/alimentations/documents/${doc.id}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-xs btn-ghost gap-1 px-1"
@@ -922,7 +928,7 @@ const AlimentationsPage = () => {
                             {alimentation.documents.map((doc) => (
                               <a
                                 key={doc.id}
-                                href={doc.url}
+                                href={`/api/alimentations/documents/${doc.id}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-xs btn-ghost gap-1"
@@ -1236,7 +1242,7 @@ const AlimentationsPage = () => {
                             </div>
                           </div>
                           <a
-                            href={doc.url}
+                            href={`/api/alimentations/documents/${doc.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-sm btn-primary gap-2"

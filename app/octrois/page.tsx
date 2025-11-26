@@ -604,9 +604,15 @@ const OctroisPage = () => {
       return;
     }
 
-    // Demander confirmation
+    // Validation : Observation obligatoire pour les rejets
+    if (action === 'reject' && (!observations || observations.trim() === '')) {
+      toast.error('Une observation est obligatoire pour rejeter un octroi');
+      return;
+    }
+
+    // Demander confirmation avec affichage de l'observation si fournie
     const confirmMessage = `Êtes-vous sûr de vouloir ${action === 'validate' ? 'valider' : action === 'reject' ? 'rejeter' : 'mettre en instance'
-      } ${selectedIds.size} octroi(s) ?`;
+      } ${selectedIds.size} octroi(s) ?${observations ? '\n\nObservation : ' + observations : ''}`;
 
     if (!confirm(confirmMessage)) {
       return;
@@ -779,7 +785,7 @@ const OctroisPage = () => {
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <textarea
-                    placeholder="Observations (optionnel)"
+                    placeholder="Observations (obligatoire pour le rejet)"
                     className="textarea textarea-bordered textarea-sm w-64"
                     value={observations}
                     onChange={(e) => setObservations(e.target.value)}
@@ -1713,7 +1719,7 @@ const OctroisPage = () => {
                             </div>
                           </div>
                           <a
-                            href={doc.url}
+                            href={`/api/octrois/documents/${doc.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-sm btn-primary gap-2"

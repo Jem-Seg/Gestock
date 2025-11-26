@@ -13,7 +13,7 @@ export async function GET(
 
     try {
       // Récupérer le document
-      const document = await prisma.documentAlimentation.findUnique({
+      const document = await prisma.documentOctroi.findUnique({
         where: { id },
       });
 
@@ -67,7 +67,7 @@ export async function DELETE(
 
     try {
       // Récupérer le document
-      const document = await prisma.documentAlimentation.findUnique({
+      const document = await prisma.documentOctroi.findUnique({
         where: { id },
       });
 
@@ -88,7 +88,7 @@ export async function DELETE(
       }
 
       // Supprimer de la base de données
-      await prisma.documentAlimentation.delete({
+      await prisma.documentOctroi.delete({
         where: { id },
       });
 

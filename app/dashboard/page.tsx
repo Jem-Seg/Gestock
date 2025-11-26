@@ -35,7 +35,7 @@ const Page = () => {
   const user = session?.user
   const [userPermissions, setUserPermissions] = React.useState<UserPermissions | null>(null)
   const [userData, setUserData] = React.useState<UserData | null>(null)
-  const [selectedStructureId, setSelectedStructureId] = React.useState<string | undefined>("")
+  const [selectedStructureId, setSelectedStructureId] = React.useState<string | undefined>(undefined)
   // Charger les informations de permissions de l'utilisateur
   React.useEffect(() => {
     if (status !== 'authenticated' || !(user as any)?.id) return;
