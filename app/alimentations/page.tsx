@@ -220,6 +220,17 @@ const AlimentationsPage = () => {
       return;
     }
     
+    // Pour les actions de workflow (valider, rejeter, mettre en instance),
+    // vérifier que l'utilisateur a consulté les observations s'il y en a
+    if (action !== 'delete' && alimentation.historiqueActions && alimentation.historiqueActions.length > 0) {
+      if (!viewedObservationsIds.has(alimentation.id)) {
+        toast.error('Vous devez d\'abord consulter les observations avant de procéder à cette action');
+        // Ouvrir automatiquement le modal des observations
+        openHistoryModal(alimentation);
+        return;
+      }
+    }
+    
     setSelectedAlimentation(alimentation);
     setActionType(action);
     setShowActionModal(true);
@@ -429,6 +440,15 @@ const AlimentationsPage = () => {
   // Marquer une alimentation comme ayant ses observations consultées
   const markObservationsViewed = (id: string) => {
     setViewedObservationsIds(prev => new Set(prev).add(id));
+  };
+
+  // Convertir l'URL du document pour utiliser la route API
+  const getDocumentUrl = (url: string) => {
+    // Si l'URL commence par /uploads/, la remplacer par /api/documents/
+    if (url.startsWith('/uploads/')) {
+      return url.replace('/uploads/', '/api/documents/');
+    }
+    return url;
   };
 
   // Exécuter une action groupée
@@ -702,7 +722,7 @@ const AlimentationsPage = () => {
                             {alimentation.documents.map((doc) => (
                               <a
                                 key={doc.id}
-                                href={doc.url}
+                                href={getDocumentUrl(doc.url)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-xs btn-ghost gap-1 px-1"
@@ -922,7 +942,7 @@ const AlimentationsPage = () => {
                             {alimentation.documents.map((doc) => (
                               <a
                                 key={doc.id}
-                                href={doc.url}
+                                href={getDocumentUrl(doc.url)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-xs btn-ghost gap-1"
@@ -1079,15 +1099,20 @@ const AlimentationsPage = () => {
                   </div>
                 ) : (
                   <div className="form-control mb-4">
-                    <label className="label">Observations</label>
+                    <label className="label">
+                      <span className="label-text">Observations <span className="text-error">*</span></span>
+                    </label>
                     <textarea
                       className="textarea textarea-bordered"
                       value={observations}
                       onChange={(e) => setObservations(e.target.value)}
-                      placeholder="Saisir vos observations..."
+                      placeholder="Saisir vos observations (obligatoire)..."
                       rows={4}
-                      required={actionType === 'instance' || actionType === 'reject'}
+                      required
                     />
+                    <label className="label">
+                      <span className="label-text-alt text-error">La saisie d'observations est obligatoire pour toutes les actions</span>
+                    </label>
                   </div>
                 )}
 
@@ -1236,7 +1261,7 @@ const AlimentationsPage = () => {
                             </div>
                           </div>
                           <a
-                            href={doc.url}
+                            href={getDocumentUrl(doc.url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-sm btn-primary gap-2"

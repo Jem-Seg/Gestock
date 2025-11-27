@@ -108,14 +108,14 @@ export default function MouvementsPeriode({
           <div className="text-xl font-bold text-blue-600">
             {data.statistiques.valeurEntree.toLocaleString('fr-FR')}
           </div>
-          <div className="text-xs text-gray-500">FCFA</div>
+          <div className="text-xs text-gray-500">MRU</div>
         </div>
         <div className="bg-orange-50 p-4 rounded text-center">
           <div className="text-sm text-gray-600">Valeur Sorties</div>
           <div className="text-xl font-bold text-orange-600">
             {data.statistiques.valeurSortie.toLocaleString('fr-FR')}
           </div>
-          <div className="text-xs text-gray-500">FCFA</div>
+          <div className="text-xs text-gray-500">MRU</div>
         </div>
       </div>
 

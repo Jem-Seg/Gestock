@@ -18,6 +18,7 @@ import {
   Calendar
 } from 'lucide-react';
 import EtatStockGeneral from '@/app/components/etats/EtatStockGeneral';
+import EtatStockParArticle from '@/app/components/etats/EtatStockParArticle';
 import EtatStockParStructure from '@/app/components/etats/EtatStockParStructure';
 import EtatAlertes from '@/app/components/etats/EtatAlertes';
 import BonEntree from '@/app/components/etats/BonEntree';
@@ -470,6 +471,10 @@ export default function EtatsPage() {
                   <EtatStockGeneral structureId={structureId} />
                 )}
                 
+                {typeEtat === 'stock-article' && produitId && (
+                  <EtatStockParArticle produitId={produitId} />
+                )}
+                
                 {typeEtat === 'stock-structure' && structureId && (
                   <EtatStockParStructure structureId={structureId} />
                 )}
@@ -509,17 +514,6 @@ export default function EtatsPage() {
                     dateDebut={dateDebut}
                     dateFin={dateFin}
                   />
-                )}
-                
-                {/* États non encore implémentés */}
-                {typeEtat && !['stock-general', 'stock-structure', 'stock-alertes', 'bon-entree', 'bon-sortie', 'mouvements-periode', 'historique-article', 'historique-structure'].includes(typeEtat) && (
-                  <div className="alert alert-info">
-                    <FileText className="w-6 h-6" />
-                    <div>
-                      <div className="font-bold">État {typeEtat}</div>
-                      <div className="text-sm">Composant en cours de développement</div>
-                    </div>
-                  </div>
                 )}
               </div>
             </div>

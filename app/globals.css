@@ -8,6 +8,11 @@
   }
 }
 
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(2deg); }
+}
+
 /* React toastify overrides */
 :root {
   --toastify-color-light: #ECE3CA;

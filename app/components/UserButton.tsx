@@ -3,7 +3,11 @@ import React from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { LogOut, Settings, User } from 'lucide-react'
 
-export function UserButton() {
+interface UserButtonProps {
+  mobile?: boolean
+}
+
+export function UserButton({ mobile = false }: UserButtonProps) {
   const { data: session } = useSession()
 
   if (!session?.user) return null
@@ -12,6 +16,22 @@ export function UserButton() {
     signOut({ callbackUrl: '/sign-in' })
   }
 
+  // Version mobile : bouton pleine largeur
+  if (mobile) {
+    return (
+      <div className="w-full space-y-2">
+        <button 
+          onClick={handleSignOut}
+          className="btn btn-error btn-outline w-full gap-2"
+        >
+          <LogOut className="w-4 h-4" />
+          Déconnexion
+        </button>
+      </div>
+    )
+  }
+
+  // Version desktop : dropdown
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -21,7 +41,7 @@ export function UserButton() {
           </span>
         </div>
       </label>
-      <ul tabIndex={0} className="mt-3 z-1 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+      <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
         <li className="menu-title">
           <span>{session.user.name}</span>
         </li>

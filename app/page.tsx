@@ -192,45 +192,39 @@ export default function Home() {
     <Wrapper>
       <div className="space-y-6">
         {/* Header avec info utilisateur */}
-        <div className="bg-linear-to-r from-[#8B4513] via-[#A0522D] to-[#CD853F] rounded-2xl shadow-2xl p-8 border-2 border-[#F1D2BF]/30">
+        <div className="bg-base-200 rounded-xl shadow-lg p-8 border border-base-300">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <div className="avatar placeholder">
-                <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center shadow-lg ring-4 ring-[#F1D2BF]/50">
-                  <span className="text-3xl font-bold text-[#793205]">
+                <div className="bg-primary text-primary-content rounded-full w-16 h-16">
+                  <span className="text-2xl font-semibold">
                     {userStatus?.user?.firstName?.[0] || (user as any)?.name?.[0] || 'U'}
                   </span>
                 </div>
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-[#FFF8DC] drop-shadow-lg">
-                  Bienvenue, <span className="text-[#FFE4B5]">{userStatus?.user?.firstName || (user as any)?.name || 'Utilisateur'}</span> !
+                <h1 className="text-3xl font-bold text-base-content">
+                  Bienvenue, {userStatus?.user?.firstName || (user as any)?.name || 'Utilisateur'}
                   {isAdmin && (
-                    <span className="badge badge-warning ml-3 shadow-md">👑 Admin</span>
+                    <span className="badge badge-sm badge-warning ml-2">Admin</span>
                   )}
                 </h1>
                 {userStatus?.user && (
-                  <div className="mt-3 space-y-2">
-                    <p className="flex items-center gap-2">
-                      <span className="font-semibold text-[#F5DEB3] text-base">Rôle :</span>
-                      <span className="badge bg-[#FFF8DC] text-[#793205] border-[#F5DEB3] badge-lg font-medium shadow-sm">
-                        {userStatus.user.role?.name || 'Non assigné'}
-                      </span>
+                  <div className="mt-3 space-y-1 text-base-content/70">
+                    <p className="text-sm">
+                      <span className="font-medium">Rôle :</span>{' '}
+                      {userStatus.user.role?.name || 'Non assigné'}
                     </p>
                     {userStatus.user.ministere && (
-                      <p className="flex items-center gap-2">
-                        <span className="font-semibold text-[#F5DEB3] text-base">Ministère :</span>
-                        <span className="text-[#FFF8DC] font-medium text-base">
-                          {userStatus.user.ministere.abreviation}
-                        </span>
+                      <p className="text-sm">
+                        <span className="font-medium">Ministère :</span>{' '}
+                        {userStatus.user.ministere.abreviation}
                       </p>
                     )}
                     {userStatus.user.structure && (
-                      <p className="flex items-center gap-2">
-                        <span className="font-semibold text-[#F5DEB3] text-base">Structure :</span>
-                        <span className="text-[#FFF8DC] font-medium text-base">
-                          {userStatus.user.structure.name}
-                        </span>
+                      <p className="text-sm">
+                        <span className="font-medium">Structure :</span>{' '}
+                        {userStatus.user.structure.name}
                       </p>
                     )}
                   </div>

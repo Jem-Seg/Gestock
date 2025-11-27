@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { ListTree, Menu, PackagePlus, X, Settings, ShoppingBasket, Warehouse, HandHelping, Receipt, LayoutDashboard, TrendingUp, TrendingDown, BarChart3 } from 'lucide-react'
+import { ListTree, Menu, PackagePlus, X, Settings, ShoppingBasket, Warehouse, HandHelping, Receipt, LayoutDashboard, TrendingUp, TrendingDown, BarChart3, FileText } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -24,6 +24,7 @@ const Navbar = () => {
     { href: '/transactions', label: 'Transactions', icon: Receipt },
     { href: '/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
     { href: '/statistiques', label: 'Statistiques', icon: BarChart3 },
+    { href: '/etats', label: 'États', icon: FileText },
   ]
 
   // Filtrer les liens selon les permissions
@@ -187,14 +188,20 @@ const Navbar = () => {
           </div>
 
           {/* Footer du menu mobile */}
-          <div className='p-4 bg-base-200 border-t border-base-300'>
-            {status !== 'loading' && !session?.user && (
-              <Link href="/sign-in" className="btn btn-primary w-full" onClick={() => setMenuOpen(false)}>
-                Se connecter
-              </Link>
+          <div className='p-4 bg-base-200 border-t border-base-300 space-y-3'>
+            {status !== 'loading' && (
+              <>
+                {session?.user ? (
+                  <UserButton mobile />
+                ) : (
+                  <Link href="/sign-in" className="btn btn-primary w-full" onClick={() => setMenuOpen(false)}>
+                    Se connecter
+                  </Link>
+                )}
+              </>
             )}
             {dbUser?.ministere && (
-              <div className='text-xs text-center text-base-content/60 mt-3'>
+              <div className='text-xs text-center text-base-content/60'>
                 {dbUser.ministere.name}
               </div>
             )}

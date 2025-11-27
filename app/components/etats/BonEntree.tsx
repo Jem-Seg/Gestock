@@ -99,10 +99,10 @@ export default function BonEntree({ alimentationId }: BonEntreeProps) {
                 {data.quantite.quantite} {data.produit.unite}
               </td>
               <td className="border border-gray-300 p-2 text-right">
-                {data.quantite.prixUnitaire.toLocaleString('fr-FR')} FCFA
+                {data.quantite.prixUnitaire.toLocaleString('fr-FR')} MRU
               </td>
               <td className="border border-gray-300 p-2 text-right font-bold">
-                {data.quantite.montantTotal.toLocaleString('fr-FR')} FCFA
+                {data.quantite.montantTotal.toLocaleString('fr-FR')} MRU
               </td>
             </tr>
           </tbody>
